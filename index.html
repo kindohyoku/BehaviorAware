@@ -73,10 +73,10 @@
               <div class="publication-links">
                 <!-- PDF Link -->
                 <span class="link-block">
-                  <a href="./manuscript.pdf" class="button is-normal is-rounded is-dark" target="_blank">
+                  <a class="button is-normal is-rounded is-dark is-static">
                     <span class="icon">
                       <i class="fas fa-file-pdf"></i></span>
-                    <span>Paper</span>
+                    <span>Paper (Coming Soon)</span>
                   </a>
                 </span>
                 
@@ -85,14 +85,6 @@
                   <a class="button is-normal is-rounded is-dark is-static">
                     <span class="icon"><i class="fab fa-youtube"></i></span>
                     <span>Video (Coming Soon)</span>
-                  </a>
-                </span>
-                
-                <!-- GitHub Link -->
-                <span class="link-block">
-                  <a href="https://github.com/kindohyoku/BehaviorAware" class="button is-normal is-rounded is-dark">
-                    <span class="icon"><i class="fab fa-github"></i></span>
-                    <span>Code</span>
                   </a>
                 </span>
               </div>
@@ -107,10 +99,7 @@
   <section class="hero teaser">
     <div class="container is-max-desktop">
       <div class="hero-body">
-        <img src="./static/images/Figure01.png" alt="Visualization of Movement Trajectories in Generated Path-Only and Human-Operational Layouts" style="width:100%; display:block; margin:0;">
-        <h2 class="subtitle has-text-centered" style="margin-top: 20px;">
-          <strong>Figure 1:</strong> Visualization of Movement Trajectories in Generated Path-Only and Human-Operational Layouts.
-        </h2>
+        <img src="./static/images/Figure01.png" alt="Teaser" style="width:100%; display:block; margin:0;">
       </div>
     </div>
   </section>
@@ -125,17 +114,9 @@
             <p>
               Well-designed indoor scenes should prioritize how people can act within a space rather than merely what objects to place. 
               However, existing 3D scene generation methods emphasize visual and semantic plausibility, while insufficiently addressing 
-              whether people can comfortably walk, sit, or manipulate objects. To bridge this gap, we present a <strong>Behavior-Aware 
-              Anthropometric Scene Generation</strong> framework. Our approach leverages vision–language models (VLMs) to analyze 
-              object–behavior relationships, translating spatial requirements into parametric layout constraints adapted to user-specific 
-              anthropometric data.
-            </p>
-            <p>
-              We conducted comparative studies with state-of-the-art models using geometric metrics and a user perception study (N=16). 
-              We further conducted in-depth human-scale studies (individuals, N=20; groups, N=18). The results showed improvements in 
-              task completion time, trajectory efficiency, and human-object manipulation space. This study contributes a framework that 
-              bridges VLM-based interaction reasoning with anthropometric constraints, validated through both technical metrics and 
-              real-scale human usability studies.
+              whether people can comfortably walk, sit, or manipulate objects. We present a Behavior-Aware Anthropometric Scene Generation 
+              framework that leverages vision–language models to analyze object–behavior relationships and translates spatial requirements 
+              into parametric layout constraints adapted to user-specific anthropometric data.
             </p>
           </div>
         </div>
@@ -147,17 +128,8 @@
   <section class="section">
     <div class="container is-max-desktop">
       <h2 class="title is-3">Framework Overview</h2>
-      <div class="content has-text-justified">
-        <p>
-          Our framework proceeds in two main stages: (1) <strong>Semantic and Behavioral Representation</strong> for spatial relation 
-          construction, and (2) <strong>Constraint-based Layout Generation</strong> using anthropometric grounding.
-        </p>
-      </div>
       <div class="content has-text-centered">
         <img src="./static/images/Figure02.png" alt="Framework Overview" style="width: 100%;">
-        <h3 class="subtitle has-text-centered" style="margin-top: 20px;">
-          <strong>Figure 2:</strong> Overview of the Behavior-Aware Anthropometric Scene Generation framework.
-        </h3>
       </div>
     </div>
   </section>
@@ -166,168 +138,33 @@
   <section class="section">
     <div class="container is-max-desktop">
       <h2 class="title is-3">Methodology</h2>
-      
-      <h3 class="title is-4">1. Semantic and Behavioral Representation</h3>
-      <div class="content has-text-justified">
-        <p>
-          We construct behavior-aware relational representations by:
-        </p>
-        <ul>
-          <li><strong>Data Preprocessing:</strong> Extracting 3D bounding boxes, metadata, and multi-view renderings of objects</li>
-          <li><strong>Functional Description:</strong> Using VLM to infer functional properties from visual and textual cues</li>
-          <li><strong>Human-Object Interaction Pattern:</strong> Identifying the top five human actions associated with each object</li>
-          <li><strong>Semantic Grouping:</strong> Organizing objects into functional groups based on behavioral configurations</li>
-        </ul>
-      </div>
       <div class="content has-text-centered">
-        <img src="./static/images/Figure03.png" alt="Semantic and Behavioral Representation" style="width: 100%; margin-bottom: 20px;">
-      </div>
-
-      <h3 class="title is-4">2. Anthropometric-Based Constraint Inference</h3>
-      <div class="content has-text-justified">
-        <p>
-          We translate spatial relations into parametric constraints by:
-        </p>
-        <ul>
-          <li><strong>Position-Based Constraints:</strong> Define minimum distances for clearance and operational space</li>
-          <li><strong>Orientation-Based Constraints:</strong> Align objects based on task-oriented requirements</li>
-          <li><strong>Height-Based Constraints:</strong> Ensure vertical stacking relationships preserve interaction area</li>
-        </ul>
-        <p>
-          All constraints are grounded in anthropometric data from standardized datasets (5th–95th percentile ranges), 
-          ensuring validity across diverse body sizes.
-        </p>
-      </div>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure04.png" alt="Anthropometric-Based Constraint Inference" style="width: 100%; margin-bottom: 20px;">
+        <img src="./static/images/Figure03.png" alt="Methodology" style="width: 100%; margin-bottom: 40px;">
+        <img src="./static/images/Figure04.png" alt="Constraint Inference" style="width: 100%;">
       </div>
     </div>
   </section>
 
-  <!-- Results: Technical Validation -->
+  <!-- Results -->
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3">Technical Validation</h2>
-      
-      <h3 class="title is-4">Geometry-Based Evaluation</h3>
-      <div class="content has-text-justified">
-        <p>
-          We compared our method with LayoutVLM on collision-free score and in-boundary score. Our method achieved 
-          a collision-free score of <strong>90.4</strong> and an in-boundary score of <strong>73.4</strong>, compared 
-          to the baseline's scores of 92.2 and 63.2. While showing a slightly lower collision-free score (−1.8%), 
-          our framework demonstrated substantially improved boundary adherence (+10.2%).
-        </p>
-      </div>
+      <h2 class="title is-3">Results</h2>
       <div class="content has-text-centered">
-        <img src="./static/images/Figure05.png" alt="Interface for User Perception Study" style="width: 100%; margin-bottom: 20px;">
-      </div>
-
-      <h3 class="title is-4">User Perception Study (N=16)</h3>
-      <div class="content has-text-justified">
-        <p>
-          Professional designers and architects evaluated generated layouts on five criteria using a 7-point Likert scale. 
-          Our method consistently outperformed the baseline across all metrics, achieving a median of <strong>5.0</strong> 
-          compared to the baseline's median of 3.0. Statistical analysis confirmed significant improvements (p < 0.01) with 
-          large effect sizes (r > 0.77) for:
-        </p>
-        <ul>
-          <li><strong>Position Appropriateness:</strong> Objects placed at appropriate locations for their function</li>
-          <li><strong>Orientation Appropriateness:</strong> Objects facing directions that match their function</li>
-          <li><strong>Semantic Plausibility:</strong> Logically consistent furniture arrangements</li>
-          <li><strong>Physical Plausibility:</strong> Physically feasible layouts without collisions</li>
-          <li><strong>Functional Usability:</strong> Sufficient space for approaching, accessing, and operating objects</li>
-        </ul>
+        <img src="./static/images/Figure05.png" alt="Evaluation Interface" style="width: 100%; margin-bottom: 40px;">
+        <img src="./static/images/Figure07.png" alt="Individual Study Results" style="width: 100%; margin-bottom: 40px;">
+        <img src="./static/images/Figure08.png" alt="Group Study Results" style="width: 100%;">
       </div>
     </div>
   </section>
 
-  <!-- Results: Human-Operational Usability -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3">Human-Operational Usability Studies</h2>
-      
-      <h3 class="title is-4">Experimental Setup</h3>
-      <div class="content has-text-justified">
-        <p>
-          We implemented 1:1 scale physical environments to evaluate three conditions:
-        </p>
-        <ul>
-          <li><strong>Baseline:</strong> Layouts generated without anthropometric information</li>
-          <li><strong>Passage-Only (PO):</strong> Our framework with static body dimensions for minimal passage width</li>
-          <li><strong>Human-Operational (HO):</strong> Our framework with movement-based anthropometric dimensions for operational space</li>
-        </ul>
-      </div>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure06.png" alt="Experimental Procedure" style="width: 100%; margin-bottom: 20px;">
-      </div>
-
-      <h3 class="title is-4">Individual Study (N=20)</h3>
-      <div class="content has-text-justified">
-        <p>
-          Participants performed structured object–action–target tasks in office and lounge environments. 
-          The HO condition showed significant improvements in:
-        </p>
-        <ul>
-          <li><strong>Task Completion Time:</strong> Faster task execution due to optimized spatial arrangements</li>
-          <li><strong>Trajectory Efficiency:</strong> More direct movement paths with fewer detours</li>
-          <li><strong>Human-Object Manipulation Space:</strong> Adequate clearance for comfortable interactions</li>
-        </ul>
-      </div>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure07.png" alt="Individual Study Results" style="width: 100%; margin-bottom: 20px;">
-      </div>
-
-      <h3 class="title is-4">Group Study (N=18, six teams of three)</h3>
-      <div class="content has-text-justified">
-        <p>
-          Teams performed collaborative tasks in shared environments. The HO condition demonstrated:
-        </p>
-        <ul>
-          <li><strong>Reduced Circulation Conflicts:</strong> Fewer spatial interferences between team members</li>
-          <li><strong>Improved Spatial Negotiation:</strong> Better support for coordinated movements</li>
-          <li><strong>Enhanced Collaborative Efficiency:</strong> Smoother task execution in multi-user scenarios</li>
-        </ul>
-      </div>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure08.png" alt="Group Study Results" style="width: 100%; margin-bottom: 20px;">
-      </div>
-    </div>
-  </section>
-
-  <!-- Key Contributions -->
-  <section class="section">
-    <div class="container is-max-desktop">
-      <h2 class="title is-3">Key Contributions</h2>
-      <div class="content has-text-justified">
-        <ul>
-          <li>
-            <strong>Novel Framework:</strong> A behavior-aware anthropometric scene generation framework that leverages VLM 
-            reasoning to infer spatial constraints from human-object interactions and grounds them in individual anthropometric data.
-          </li>
-          <li>
-            <strong>Differentiable Optimization:</strong> Instantiation of these constraints within a differentiable layout 
-            optimization process, operationalizing passage widths, operational clearances, and interaction-space occupancy.
-          </li>
-          <li>
-            <strong>Comprehensive Evaluation:</strong> Evaluation combining technical validation, professional perception study, 
-            and user studies on human-operational usability in real-scale environments.
-          </li>
-        </ul>
-      </div>
-    </div>
-  </section>
 
   <!-- BibTeX -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
       <pre><code>@inproceedings{jin2026behavioraware,
-  author    = {Jin, Semin and Kim, Donghyuk and Ryu, Jeongmin and Hyun, Kyung Hoon},
   title     = {Behavior-Aware Anthropometric Scene Generation for Human-Usable 3D Layouts},
-  booktitle = {Proceedings of the 2026 CHI Conference on Human Factors in Computing Systems},
-  year      = {2026},
-  pages     = {1--20},
-  doi       = {10.1145/3772318.3790341}
+  year      = {2026}
 }</code></pre>
     </div>
   </section>
