@@ -114,16 +114,31 @@
     </div>
   </section>
 
-  <!-- ===================== TL;DR ===================== -->
-  <section class="section section-tldr">
+  <!-- ===================== ABSTRACT ===================== -->
+  <section class="section section-alt">
     <div class="container is-max-desktop">
-      <p class="tldr">
-        <span class="tldr-label">TL;DR</span>
-        Behavior-Aware Anthropometric Scene Generation asks a vision&ndash;language model
-        <em>how people will act</em> in a space, compiles those actions into body-parameterized
-        geometric constraints, and solves them into a 3D layout that real users can
-        <strong>walk, sit, reach, and manipulate within</strong> &mdash; not just look at.
-      </p>
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 section-title has-text-centered">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Well-designed indoor scenes should prioritize <em>how people can act</em> within a space
+              rather than merely <em>what objects to place</em>. However, existing 3D scene generation
+              methods emphasize visual and semantic plausibility, while insufficiently addressing whether
+              people can comfortably walk, sit, or manipulate objects.
+            </p>
+            <p>
+              We present a <strong>Behavior-Aware Anthropometric Scene Generation</strong> framework that
+              leverages vision&ndash;language models to analyze object&ndash;behavior relationships and
+              translates spatial requirements into parametric layout constraints adapted to user-specific
+              anthropometric data. Through individual and group user studies with motion-captured
+              trajectories, we show that layouts generated with our framework yield shorter task-completion
+              times, fewer detours, cleaner action sequences, and a substantially larger usable
+              manipulation volume than path-only and baseline layouts.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -177,34 +192,6 @@
             detours, action chains, and the volume their bodies actually fill &mdash; not
             just survey scores.
           </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== ABSTRACT ===================== -->
-  <section class="section section-alt">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column is-four-fifths">
-          <h2 class="title is-3 section-title has-text-centered">Abstract</h2>
-          <div class="content has-text-justified">
-            <p>
-              Well-designed indoor scenes should prioritize <em>how people can act</em> within a space
-              rather than merely <em>what objects to place</em>. However, existing 3D scene generation
-              methods emphasize visual and semantic plausibility, while insufficiently addressing whether
-              people can comfortably walk, sit, or manipulate objects.
-            </p>
-            <p>
-              We present a <strong>Behavior-Aware Anthropometric Scene Generation</strong> framework that
-              leverages vision&ndash;language models to analyze object&ndash;behavior relationships and
-              translates spatial requirements into parametric layout constraints adapted to user-specific
-              anthropometric data. Through individual and group user studies with motion-captured
-              trajectories, we show that layouts generated with our framework yield shorter task-completion
-              times, fewer detours, cleaner action sequences, and a substantially larger usable
-              manipulation volume than path-only and baseline layouts.
-            </p>
-          </div>
         </div>
       </div>
     </div>
