@@ -23,13 +23,15 @@
     gtag('config', 'G-PYVRSFMDRL');
   </script>
 
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro|JetBrains+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro|JetBrains+Mono|Fira+Code" rel="stylesheet">
 
   <link rel="stylesheet" href="./static/css/bulma.min.css">
   <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
   <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/method_console.css">
+  <link rel="stylesheet" href="./static/css/pipeline_interactive.css">
   <link rel="stylesheet" href="./static/css/index.css">
   <link rel="icon" href="./static/images/favicon.svg">
 
@@ -38,6 +40,8 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+  <script defer src="./static/js/method_console.js"></script>
+  <script defer src="./static/js/pipeline.js"></script>
 </head>
 
 <body>
@@ -110,20 +114,20 @@
     </div>
   </section>
 
-  <!-- ===================== TL;DR / KEY INSIGHT ===================== -->
+  <!-- ===================== TL;DR ===================== -->
   <section class="section section-tldr">
     <div class="container is-max-desktop">
       <p class="tldr">
         <span class="tldr-label">TL;DR</span>
-        Behavior-Aware Anthropometric Scene Generation is a framework that asks a
-        vision&ndash;language model <em>how people will act</em> in a space, compiles those actions into
-        body-parameterized geometric constraints, and solves them into a 3D layout that real users
-        can <strong>walk, sit, reach, and manipulate within</strong> &mdash; not just look at.
+        Behavior-Aware Anthropometric Scene Generation asks a vision&ndash;language model
+        <em>how people will act</em> in a space, compiles those actions into body-parameterized
+        geometric constraints, and solves them into a 3D layout that real users can
+        <strong>walk, sit, reach, and manipulate within</strong> &mdash; not just look at.
       </p>
     </div>
   </section>
 
-  <!-- ===================== OVERVIEW CARDS ===================== -->
+  <!-- ===================== OVERVIEW ===================== -->
   <section class="section">
     <div class="container is-max-desktop">
       <h2 class="title is-3 section-title">Overview</h2>
@@ -134,10 +138,9 @@
           <div class="overview-card-icon"><i class="fas fa-eye"></i></div>
           <h3>Behavioral Affordance Analysis</h3>
           <p>
-            A VLM reads each Objaverse asset's functional description and predicts the
-            <em>top-five human actions</em> it affords &mdash; <em>open</em>, <em>push</em>,
-            <em>pull</em>, <em>touch</em>, <em>close</em>. Behavior becomes a first-class input,
-            not an after-the-fact constraint.
+            A VLM reads each asset's functional description and predicts the
+            <em>top-five human actions</em> it affords. Behavior becomes a first-class input,
+            not an afterthought.
           </p>
         </div>
 
@@ -146,9 +149,8 @@
           <div class="overview-card-icon"><i class="fas fa-object-group"></i></div>
           <h3>Semantic Grouping</h3>
           <p>
-            An LLM clusters assets into functional zones (individual work area, storage area,
-            &hellip;) and emits explicit <em>intra-group</em> and <em>inter-group</em> spatial
-            relations, so the layout reflects how people actually use rooms.
+            An LLM clusters assets into functional zones with explicit
+            <em>intra-group</em> and <em>inter-group</em> spatial relations.
           </p>
         </div>
 
@@ -157,10 +159,9 @@
           <div class="overview-card-icon"><i class="fas fa-ruler-combined"></i></div>
           <h3>Anthropometric Constraints</h3>
           <p>
-            Every distance, orientation, and clearance term is parameterized by user body
-            dimensions (shoulder width <span class="mono">H4</span>, arm reach <span class="mono">H3</span>,
-            sitting height <span class="mono">V1</span>&hellip;) and solved with a Blender constraint
-            solver per individual.
+            Distances, orientations and clearances are parameterized by user body
+            dimensions (<span class="mono">H3</span>, <span class="mono">H4</span>,
+            <span class="mono">V1</span>&hellip;) and solved per individual.
           </p>
         </div>
 
@@ -169,8 +170,7 @@
           <div class="overview-card-icon"><i class="fas fa-running"></i></div>
           <h3>Validated by Motion Capture</h3>
           <p>
-            Individual (60&nbsp;min) and group (120&nbsp;min) studies in an 8-camera mocap room
-            record SMPL trajectories. Layouts produced by our framework show shorter task time,
+            Individual and group studies in an 8-camera mocap room confirm shorter task times,
             fewer detours, and larger usable manipulation volume.
           </p>
         </div>
@@ -206,114 +206,222 @@
     </div>
   </section>
 
-  <!-- ===================== METHOD ===================== -->
+  <!-- ===================== METHOD CONSOLE ===================== -->
   <section class="section">
     <div class="container is-max-desktop">
-      <h2 class="title is-3 section-title">Method</h2>
-      <p class="section-lead">
-        Our pipeline factors scene generation into two stages: a <em>Semantic and Behavioral
-        Representation</em> built by a VLM/LLM (A&ndash;E), then a <em>Constraint-based Layout
-        Generation</em> stage that compiles and solves anthropometric constraints (F&ndash;G).
+      <h2 class="title is-3 section-title has-text-centered">Method</h2>
+      <p class="section-lead has-text-centered" style="margin-left:auto;margin-right:auto;">
+        Click each step to explore how behavior and anthropometry are turned into solved layouts.
       </p>
 
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure02.png" alt="Framework overview, stages A through G">
-      </div>
+      <div class="method-console-wrapper">
+        <!-- Left navigator -->
+        <div class="console-nav">
+          <div class="nav-item active" data-target="stage-1">
+            <div class="nav-number">Step 1</div>
+            <h3 class="nav-title"><i class="fas fa-eye"></i> Behavioral Affordance</h3>
+            <p class="nav-desc">VLM extracts the top actions each asset affords.</p>
+          </div>
+          <div class="nav-item" data-target="stage-2">
+            <div class="nav-number">Step 2</div>
+            <h3 class="nav-title"><i class="fas fa-object-group"></i> Semantic Grouping</h3>
+            <p class="nav-desc">LLM clusters assets into functional zones with relations.</p>
+          </div>
+          <div class="nav-item" data-target="stage-3">
+            <div class="nav-number">Step 3</div>
+            <h3 class="nav-title"><i class="fas fa-ruler-combined"></i> Anthropometric Constraints</h3>
+            <p class="nav-desc">Compile body-parameterized rules into a solver program.</p>
+          </div>
+          <div class="nav-item" data-target="stage-4">
+            <div class="nav-number">Step 4</div>
+            <h3 class="nav-title"><i class="fas fa-cogs"></i> Sequential Group Optimization</h3>
+            <p class="nav-desc">Solve groups one after another for a per-user layout.</p>
+          </div>
+        </div>
 
-      <!-- Step 1 -->
-      <div class="method-step-block">
-        <div class="step-header">
-          <span class="step-tag">Step 1</span>
-          <h3 class="step-title">Input Assets &amp; Functional Description</h3>
-        </div>
-        <p class="step-lead">
-          Each Objaverse asset is rendered from multiple views in Blender. The VLM returns a
-          <em>functional description</em> &mdash; which faces must stay clear, which parts move,
-          how the part is meant to be used.
-        </p>
-        <div class="content has-text-centered">
-          <img src="./static/images/Figure03.png" alt="Data preprocessing, functional description, and interaction pattern extraction">
-        </div>
-      </div>
+        <!-- Right stage -->
+        <div class="console-stage">
 
-      <!-- Step 2 -->
-      <div class="method-step-block">
-        <div class="step-header">
-          <span class="step-tag">Step 2</span>
-          <h3 class="step-title">Human&ndash;Object Interaction Pattern</h3>
-        </div>
-        <p class="step-lead">
-          For every asset we prompt the VLM for the <em>top-five actions</em> it affords. These
-          actions later determine the kinematic volume that must remain unobstructed around the
-          object.
-        </p>
-        <div class="action-chips">
-          <span class="action-chip"><i class="fas fa-door-open"></i> open</span>
-          <span class="action-chip"><i class="fas fa-hand-pointer"></i> push</span>
-          <span class="action-chip"><i class="fas fa-hand-rock"></i> pull</span>
-          <span class="action-chip"><i class="fas fa-hand-paper"></i> touch</span>
-          <span class="action-chip"><i class="fas fa-times-circle"></i> close</span>
-        </div>
-      </div>
+          <!-- Stage 1 -->
+          <div class="stage-content active" id="stage-1">
+            <div class="stage-header">
+              <h3><i class="fas fa-eye" style="color:#0070C0;"></i> Behavioral Affordance Analysis</h3>
+              <p>For every asset, we render multiple views in Blender and prompt a VLM for a functional description and the most likely user actions.</p>
+            </div>
 
-      <!-- Step 3 -->
-      <div class="method-step-block">
-        <div class="step-header">
-          <span class="step-tag">Step 3</span>
-          <h3 class="step-title">Semantic Grouping &amp; Constraint Compilation</h3>
-        </div>
-        <p class="step-lead">
-          An LLM clusters assets into functional groups and writes <em>intra-group</em> and
-          <em>inter-group</em> spatial relations. These are emitted as Blender constraint solver calls
-          parameterized by the user's anthropometry.
-        </p>
-        <div class="content has-text-centered">
-          <img src="./static/images/Figure04.png" alt="Semantic grouping and anthropometric constraint definitions">
-        </div>
-        <pre class="code-block"><code>solver = ConstraintSolver()
-width_d = desk.width * 2          <span class="cmt"># Desk + Desk</span>
-depth_d = desk.depth + chair.depth <span class="cmt"># Desk + Chair</span>
+            <div class="content">
+              <p><strong>Functional description (VLM output):</strong></p>
+              <pre class="code-block"><code>{
+  "category": "drawer",
+  "description": "Rectangular drawer with a flat top.",
+  "size_m": { "w": 1.0, "d": 0.4, "h": 0.9 },
+  "on_floor": true, "on_wall": false, "on_ceiling": false,
+  "movable_parts": "Front panel slides horizontally on rails.",
+  "clearance_rule": "Keep front face clear for side-to-side access."
+}</code></pre>
+
+              <p style="margin-top:1.5rem;"><strong>Top-5 affordances</strong> &mdash; swipe through the action library:</p>
+              <div class="library-carousel-wrapper">
+                <button class="carousel-btn prev-btn" id="library-prev" aria-label="Previous">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="action-library-container">
+                  <div class="action-library" id="action-library-scroll">
+                    <div class="library-family">
+                      <h5><i class="fas fa-door-open" style="color:#0070C0;"></i> open</h5>
+                      <span class="action-tag">drawer</span>
+                      <span class="action-tag">door</span>
+                      <span class="action-tag">cabinet</span>
+                      <span class="action-tag">lid</span>
+                    </div>
+                    <div class="library-family">
+                      <h5><i class="fas fa-hand-pointer" style="color:#78206E;"></i> push</h5>
+                      <span class="action-tag">button</span>
+                      <span class="action-tag">chair</span>
+                      <span class="action-tag">box</span>
+                    </div>
+                    <div class="library-family">
+                      <h5><i class="fas fa-hand-rock" style="color:#3B7D23;"></i> pull</h5>
+                      <span class="action-tag">drawer</span>
+                      <span class="action-tag">cord</span>
+                      <span class="action-tag">handle</span>
+                    </div>
+                    <div class="library-family">
+                      <h5><i class="fas fa-hand-paper" style="color:#d97706;"></i> touch</h5>
+                      <span class="action-tag">screen</span>
+                      <span class="action-tag">panel</span>
+                      <span class="action-tag">surface</span>
+                    </div>
+                    <div class="library-family">
+                      <h5><i class="fas fa-times-circle" style="color:#7c3aed;"></i> close</h5>
+                      <span class="action-tag">drawer</span>
+                      <span class="action-tag">door</span>
+                      <span class="action-tag">lid</span>
+                      <span class="action-tag">cabinet</span>
+                    </div>
+                  </div>
+                </div>
+                <button class="carousel-btn next-btn" id="library-next" aria-label="Next">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stage 2 -->
+          <div class="stage-content" id="stage-2">
+            <div class="stage-header">
+              <h3><i class="fas fa-object-group" style="color:#78206E;"></i> Semantic Grouping</h3>
+              <p>An LLM clusters assets into functional groups and emits explicit intra- and inter-group spatial relations.</p>
+            </div>
+
+            <div class="plan-sequence">
+              <div class="plan-step">
+                <span class="plan-step-num">G1</span>
+                <span class="plan-step-action">individual_work_area</span>
+                <span class="plan-step-object">desk</span>
+                <span class="plan-step-object">chair</span>
+                <span class="plan-step-object">monitor</span>
+              </div>
+              <div class="plan-step">
+                <span class="plan-step-num">G2</span>
+                <span class="plan-step-action">storage_area</span>
+                <span class="plan-step-object">drawer</span>
+                <span class="plan-step-object">cabinet</span>
+              </div>
+              <div class="plan-step">
+                <span class="plan-step-num">R1</span>
+                <span class="plan-step-action">intra_group</span>
+                <span class="plan-step-object">chair faces desk</span>
+              </div>
+              <div class="plan-step">
+                <span class="plan-step-num">R2</span>
+                <span class="plan-step-action">intra_group</span>
+                <span class="plan-step-object">desk against wall</span>
+              </div>
+              <div class="plan-step">
+                <span class="plan-step-num">R3</span>
+                <span class="plan-step-action">inter_group</span>
+                <span class="plan-step-object">drawer reachable from chair</span>
+              </div>
+            </div>
+
+            <p class="step-lead" style="margin-top:1.25rem;">
+              <em>Rationale.</em> G1 is the user's primary work zone; G2 is reachable storage.
+              The intra-group relations keep ergonomics tight; the inter-group relation keeps
+              the workflow short.
+            </p>
+          </div>
+
+          <!-- Stage 3 -->
+          <div class="stage-content" id="stage-3">
+            <div class="stage-header">
+              <h3><i class="fas fa-ruler-combined" style="color:#3B7D23;"></i> Anthropometric Constraint Compilation</h3>
+              <p>Every distance, orientation and clearance term is parameterized by the user's body measurements, then passed to a Blender constraint solver.</p>
+            </div>
+
+            <p><strong>Body parameters (from A-pose capture):</strong></p>
+            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin:0.5rem 0 1rem 0;">
+              <span class="action-tag"><span class="mono">H3</span>&nbsp; arm reach</span>
+              <span class="action-tag"><span class="mono">H4</span>&nbsp; shoulder width</span>
+              <span class="action-tag"><span class="mono">H6</span>&nbsp; hand depth</span>
+              <span class="action-tag"><span class="mono">V1</span>&nbsp; sitting / standing height</span>
+            </div>
+
+            <pre class="code-block"><code>solver = ConstraintSolver()
+width_d  = desk.width * 2                 # Desk + Desk
+depth_d  = desk.depth + chair.depth       # Desk + Chair
 
 for i in range(N):
-    <span class="cmt"># Orientation constraint &mdash; against wall, for space efficiency</span>
+    # Orientation &mdash; against wall, for space efficiency
     solver.against_wall(desks[i], walls[0])
 
-    <span class="cmt"># Position constraint &mdash; accessibility gap + half widths</span>
-    if i &lt; N-1:
+    # Position &mdash; min/max spacing scaled by accessibility gap
+    if i &lt; N - 1:
         solver.distance_constraint(desks[i], desks[i+1],
-            min=0.1 + (width_d / 2),
-            max=0.3 + (width_d / 2) + Tolerance)
+            min = 0.1 + (width_d / 2),
+            max = 0.3 + (width_d / 2) + Tolerance)
 
-    <span class="cmt"># Chair facing the desk</span>
-    solver.point_towards(chairs[i], desks[i])</code></pre>
-      </div>
+    # Chair must face the desk
+    solver.point_towards(chairs[i], desks[i])
 
-      <!-- Step 4 -->
-      <div class="method-step-block">
-        <div class="step-header">
-          <span class="step-tag">Step 4</span>
-          <h3 class="step-title">Sequential Group Optimization</h3>
+    # Drawer at arm-reach H3 from chair
+    solver.distance_constraint(drawers[i], chairs[i],
+        max = H3 - Tolerance)</code></pre>
+          </div>
+
+          <!-- Stage 4 -->
+          <div class="stage-content" id="stage-4">
+            <div class="stage-header">
+              <h3><i class="fas fa-cogs" style="color:#595959;"></i> Sequential Group Optimization</h3>
+              <p>Groups are solved one after another so later groups inherit the geometry of earlier ones, producing a Behavior-Aware Anthropometric Scene tailored to the participant's body.</p>
+            </div>
+
+            <img src="./static/images/Figure02.png" alt="Full A-G framework pipeline"
+                 style="width:100%; border-radius:10px; border:1px solid #e2e8f0; margin-top:0.5rem;">
+            <p class="step-lead" style="margin-top:1rem;">
+              The pipeline factors generation into a <em>Semantic &amp; Behavioral Representation</em>
+              built by the VLM/LLM (stages A&ndash;E) and a <em>Constraint-based Layout Generation</em>
+              stage (F&ndash;G) that compiles and solves the anthropometric program.
+            </p>
+          </div>
+
         </div>
-        <p class="step-lead">
-          Groups are solved one after another so later groups inherit the geometry of earlier ones,
-          producing a Behavior-Aware Anthropometric Scene tailored to the participant's body.
-        </p>
       </div>
     </div>
   </section>
 
-  <!-- ===================== KEY CONCEPT CALLOUT ===================== -->
+  <!-- ===================== KEY CONCEPT ===================== -->
   <section class="section section-callout">
     <div class="container is-max-desktop">
       <div class="callout">
         <span class="callout-eyebrow">Key concept</span>
         <h3 class="callout-title">Human&ndash;Object Manipulation Space</h3>
         <p>
-          We define a per-action <strong>3D bounding volume</strong> sized by the user's
-          anthropometry that must stay collision-free for the action to be physically achievable.
-          Reserving this <em>volume</em> &mdash; not just a 2D walkable <em>path</em> &mdash; is what
-          separates <strong>Human-Operational</strong> layouts from prior <strong>Path-Only</strong>
-          approaches.
+          A per-action <strong>3D bounding volume</strong> sized by the user's anthropometry that
+          must stay collision-free for the action to be physically achievable. Reserving this
+          <em>volume</em> &mdash; not just a 2D walkable <em>path</em> &mdash; is what separates
+          <strong>Human-Operational</strong> layouts from prior <strong>Path-Only</strong> approaches.
         </p>
       </div>
       <div class="content has-text-centered">
@@ -327,13 +435,13 @@ for i in range(N):
     <div class="container is-max-desktop">
       <h2 class="title is-3 section-title">Experiments</h2>
       <p class="section-lead">
-        We compare three layout conditions across two scene categories under both individual and
-        group tasks.
+        We compare three layout conditions across two scene categories (Office, Lounge) under
+        both individual (60&nbsp;min) and group (120&nbsp;min) tasks in an 8-camera motion-capture room.
       </p>
 
       <div class="condition-row">
         <span class="cond cond-baseline">Baseline</span>
-        <span class="cond-desc">Existing scene-generation method, no behavior reasoning.</span>
+        <span class="cond-desc">Existing scene-generation method &mdash; no behavior reasoning.</span>
       </div>
       <div class="condition-row">
         <span class="cond cond-po">PO &middot; Path-Only</span>
@@ -343,30 +451,6 @@ for i in range(N):
         <span class="cond cond-ho">HO &middot; Human-Operational (Ours)</span>
         <span class="cond-desc">Reserves the full anthropometric manipulation volume for every action.</span>
       </div>
-
-      <h3 class="title is-5 method-step has-text-centered" style="margin-top:3rem;">Experimental Setup</h3>
-      <p class="section-lead">
-        9&nbsp;&times;&nbsp;9&nbsp;&times;&nbsp;2.5&nbsp;m motion-capture room; 5.5&nbsp;&times;&nbsp;5.5&nbsp;m action zone;
-        8 cameras; per-participant video + 3D keypoint + SMPL JSON capture.
-      </p>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure08.png" alt="Experiment setup: mocap room, anthropometric data collection, camera rig">
-      </div>
-
-      <h3 class="title is-5 method-step has-text-centered" style="margin-top:3rem;">Study Protocol</h3>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure06.png" alt="Individual (60 min) and Group (120 min) study protocols">
-      </div>
-
-      <h3 class="title is-5 method-step has-text-centered" style="margin-top:3rem;">Rating Interface</h3>
-      <p class="section-lead">
-        Each generated scene was rated on five axes &mdash; <em>Position</em>, <em>Orientation</em>,
-        <em>Semantic Plausibility</em>, <em>Physical Plausibility</em>, and
-        <em>Functional Accessibility</em> &mdash; via a top/side-view interface.
-      </p>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure05.png" alt="Evaluation interface with five rating criteria">
-      </div>
     </div>
   </section>
 
@@ -375,8 +459,6 @@ for i in range(N):
     <div class="container is-max-desktop">
       <h2 class="title is-3 section-title">Results</h2>
 
-      <!-- Metric cards -->
-      <h3 class="results-subhead">Metrics at a glance</h3>
       <div class="metric-grid">
         <div class="metric-card">
           <span class="metric-name">Task Completion Time</span>
@@ -386,67 +468,28 @@ for i in range(N):
         <div class="metric-card">
           <span class="metric-name">Trajectory Count</span>
           <span class="metric-unit">#, lower is better</span>
-          <p>Number of distinct path branches per participant. Fewer means fewer detours and clearer wayfinding.</p>
+          <p>Distinct path branches per participant &mdash; fewer detours, clearer wayfinding.</p>
         </div>
         <div class="metric-card">
           <span class="metric-name">Sequence Action Labeling</span>
           <span class="metric-unit">#, lower is better</span>
-          <p>Action-state transitions during the task. Lower indicates a cleaner, more direct action chain.</p>
+          <p>Action-state transitions during the task &mdash; lower means a cleaner action chain.</p>
         </div>
         <div class="metric-card">
           <span class="metric-name">Volumetric Occupancy Ratio</span>
           <span class="metric-unit">0&ndash;1, higher is better</span>
-          <p>Fraction of the reserved manipulation volume actually filled by the participant's body. Higher means the space fits the action.</p>
+          <p>Fraction of the reserved manipulation volume actually filled by the participant's body.</p>
         </div>
       </div>
 
-      <!-- Quantitative -->
-      <h3 class="results-subhead">Quantitative Comparison</h3>
-      <p class="section-lead">
-        Across both <em>Office</em> and <em>Lounge</em> scenes, HO significantly reduced
-        completion time, trajectory count, and sequence noise while raising volumetric occupancy.
+      <p class="section-lead" style="margin-top:1.5rem;">
+        Across both <em>Office</em> and <em>Lounge</em> scenes, <strong>HO</strong> significantly
+        reduced completion time, trajectory count and sequence noise while raising volumetric
+        occupancy &mdash; meaning the reserved space is actually used.
       </p>
+
       <div class="content has-text-centered">
         <img src="./static/images/Figure10.png" alt="Quantitative results across four metrics for Office and Lounge">
-      </div>
-
-      <!-- Layouts -->
-      <h3 class="results-subhead">Layout Comparison</h3>
-      <p class="section-lead">
-        Top-down layouts and aggregated trajectories for Office and Lounge under each condition.
-      </p>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure07.png" alt="Baseline / PO / HO layouts side-by-side with trajectory overlays">
-      </div>
-
-      <!-- Trajectory examples -->
-      <h3 class="results-subhead">Trajectory Examples</h3>
-      <p class="section-lead">
-        Per-participant traces for a representative task (<em>"Find remote control in red drawer,
-        move to sofa, sit down."</em>).
-      </p>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure11.png" alt="Per-participant trajectories under Baseline, PO and HO">
-      </div>
-
-      <!-- Manipulation Space -->
-      <h3 class="results-subhead">Manipulation-Space Utilization</h3>
-      <p class="section-lead">
-        Cumulative human meshes inside each manipulation volume. HO yields markedly higher
-        Volumetric Occupancy Ratios &mdash; the reserved space is actually used.
-      </p>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure12.png" alt="Stacked human meshes inside the manipulation space for each condition">
-      </div>
-
-      <!-- Heatmaps -->
-      <h3 class="results-subhead">Coverage Heatmaps</h3>
-      <p class="section-lead">
-        Trajectory density across all participants. HO heatmaps concentrate at functional zones
-        instead of spreading along detour paths.
-      </p>
-      <div class="content has-text-centered">
-        <img src="./static/images/Figure13.png" alt="Trajectory density heatmaps for Baseline / PO / HO in Office and Lounge">
       </div>
     </div>
   </section>
@@ -489,7 +532,9 @@ for i in range(N):
       <div class="content has-text-centered">
         <p>
           &copy; 2026 Design Informatics Lab, Hanyang University.
-          Website template adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          Website template adapted from
+          <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> /
+          <a href="https://sceneteract.github.io/">SceneTeract</a>.
         </p>
       </div>
     </div>
