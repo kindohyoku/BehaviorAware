@@ -550,6 +550,92 @@ body {
 #interpolation-image-wrapper { width: 100%; }
 #interpolation-image-wrapper img { border-radius: 5px; }
 
+/* ===== Substage blocks inside a phase panel ===== */
+.substage {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-top: 1px dashed var(--rule);
+}
+
+.substage:first-of-type { border-top: 0; padding-top: 0.25rem; }
+
+.substage-tag {
+  flex: 0 0 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(31, 58, 138, 0.18);
+}
+
+.substage-body { flex: 1; min-width: 0; }
+
+.substage-body h4 {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 0.4rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.substage-body p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+  margin: 0 0 0.75rem 0;
+}
+
+/* model badge (VLM / LLM) */
+.model-pill {
+  display: inline-block;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: #0070C0;
+  border-radius: 4px;
+  padding: 0.18rem 0.45rem;
+  vertical-align: 0.1em;
+}
+
+.model-pill.model-pill-llm { background: #78206E; }
+
+/* small soft pills (datasets, params) */
+.pipeline-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0.25rem 0;
+  align-items: center;
+}
+
+.pipe-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.85rem;
+  color: #334155;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+}
+
+.pipe-pill i { color: var(--accent); font-size: 0.8rem; }
+
 /* ===== Responsive ===== */
 @media screen and (max-width: 900px) {
   .overview-grid { grid-template-columns: 1fr; }

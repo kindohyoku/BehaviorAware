@@ -132,46 +132,50 @@
     <div class="container is-max-desktop">
       <h2 class="title is-3 section-title">Overview</h2>
 
+      <p class="section-lead">Four ideas drive the framework. They map onto the method but are not the method itself &mdash; the method has seven stages organized into two phases (see below).</p>
+
       <div class="overview-grid">
         <div class="overview-card">
           <div class="overview-card-num">1</div>
-          <div class="overview-card-icon"><i class="fas fa-eye"></i></div>
-          <h3>Behavioral Affordance Analysis</h3>
+          <div class="overview-card-icon"><i class="fas fa-shoe-prints"></i></div>
+          <h3>Behavior-First Scene Design</h3>
           <p>
-            A VLM reads each asset's functional description and predicts the
-            <em>top-five human actions</em> it affords. Behavior becomes a first-class input,
-            not an afterthought.
+            Plan how people will <em>act</em> in a room before deciding <em>where</em>
+            objects go. Function precedes geometry, so layouts are evaluated by what users
+            can do in them &mdash; not by what they look like.
           </p>
         </div>
 
         <div class="overview-card">
           <div class="overview-card-num">2</div>
-          <div class="overview-card-icon"><i class="fas fa-object-group"></i></div>
-          <h3>Semantic Grouping</h3>
+          <div class="overview-card-icon"><i class="fas fa-ruler-combined"></i></div>
+          <h3>Anthropometric Parameterization</h3>
           <p>
-            An LLM clusters assets into functional zones with explicit
-            <em>intra-group</em> and <em>inter-group</em> spatial relations.
+            Every spatial constraint scales with the user's body &mdash; shoulder width
+            <span class="mono">H4</span>, arm reach <span class="mono">H3</span>, sitting
+            height <span class="mono">V1</span>. The same scene is re-solved per individual.
           </p>
         </div>
 
         <div class="overview-card">
           <div class="overview-card-num">3</div>
-          <div class="overview-card-icon"><i class="fas fa-ruler-combined"></i></div>
-          <h3>Anthropometric Constraints</h3>
+          <div class="overview-card-icon"><i class="fas fa-brain"></i></div>
+          <h3>VLM + LLM Reasoning Engine</h3>
           <p>
-            Distances, orientations and clearances are parameterized by user body
-            dimensions (<span class="mono">H3</span>, <span class="mono">H4</span>,
-            <span class="mono">V1</span>&hellip;) and solved per individual.
+            A VLM reads object affordances from multi-view renders; an LLM clusters them
+            into functional zones and writes the constraint program. The pipeline is
+            language-model native end-to-end.
           </p>
         </div>
 
         <div class="overview-card">
           <div class="overview-card-num">4</div>
-          <div class="overview-card-icon"><i class="fas fa-running"></i></div>
-          <h3>Validated by Motion Capture</h3>
+          <div class="overview-card-icon"><i class="fas fa-video"></i></div>
+          <h3>Motion-Capture Validation</h3>
           <p>
-            Individual and group studies in an 8-camera mocap room confirm shorter task times,
-            fewer detours, and larger usable manipulation volume.
+            Real participants perform tasks in an 8-camera mocap studio. We measure time,
+            detours, action chains, and the volume their bodies actually fill &mdash; not
+            just survey scores.
           </p>
         </div>
       </div>
@@ -214,44 +218,74 @@
         Click each step to explore how behavior and anthropometry are turned into solved layouts.
       </p>
 
+      <p class="section-lead has-text-centered" style="margin-left:auto;margin-right:auto;">
+        The paper organizes the framework into <strong>two phases</strong> covering <strong>seven stages (A&ndash;G)</strong>.
+        Click each phase to expand its stages.
+      </p>
+
+      <div class="content has-text-centered" style="margin-bottom:1.5rem;">
+        <img src="./static/images/Figure02.png" alt="Full A-G framework pipeline"
+             style="max-width:100%; border-radius:10px; border:1px solid #e2e8f0;">
+      </div>
+
       <div class="method-console-wrapper">
-        <!-- Left navigator -->
+        <!-- Left navigator: 2 Phase tabs -->
         <div class="console-nav">
           <div class="nav-item active" data-target="stage-1">
-            <div class="nav-number">Step 1</div>
-            <h3 class="nav-title"><i class="fas fa-eye"></i> Behavioral Affordance</h3>
-            <p class="nav-desc">VLM extracts the top actions each asset affords.</p>
+            <div class="nav-number">Phase&nbsp;I</div>
+            <h3 class="nav-title">Semantic &amp; Behavioral Representation</h3>
+            <p class="nav-desc">Stages A&ndash;E. VLM + LLM build a behaviorally grounded scene description.</p>
           </div>
           <div class="nav-item" data-target="stage-2">
-            <div class="nav-number">Step 2</div>
-            <h3 class="nav-title"><i class="fas fa-object-group"></i> Semantic Grouping</h3>
-            <p class="nav-desc">LLM clusters assets into functional zones with relations.</p>
-          </div>
-          <div class="nav-item" data-target="stage-3">
-            <div class="nav-number">Step 3</div>
-            <h3 class="nav-title"><i class="fas fa-ruler-combined"></i> Anthropometric Constraints</h3>
-            <p class="nav-desc">Compile body-parameterized rules into a solver program.</p>
-          </div>
-          <div class="nav-item" data-target="stage-4">
-            <div class="nav-number">Step 4</div>
-            <h3 class="nav-title"><i class="fas fa-cogs"></i> Sequential Group Optimization</h3>
-            <p class="nav-desc">Solve groups one after another for a per-user layout.</p>
+            <div class="nav-number">Phase&nbsp;II</div>
+            <h3 class="nav-title">Constraint-based Layout Generation</h3>
+            <p class="nav-desc">Stages F&ndash;G. Compile and solve the anthropometric program per user.</p>
           </div>
         </div>
 
         <!-- Right stage -->
         <div class="console-stage">
 
-          <!-- Stage 1 -->
+          <!-- Phase I -->
           <div class="stage-content active" id="stage-1">
             <div class="stage-header">
-              <h3><i class="fas fa-eye" style="color:#0070C0;"></i> Behavioral Affordance Analysis</h3>
-              <p>For every asset, we render multiple views in Blender and prompt a VLM for a functional description and the most likely user actions.</p>
+              <h3>Phase&nbsp;I &middot; Semantic &amp; Behavioral Representation</h3>
+              <p>Five stages (A&ndash;E) that turn raw assets into a structured, behavior-tagged scene description.</p>
             </div>
 
-            <div class="content">
-              <p><strong>Functional description (VLM output):</strong></p>
-              <pre class="code-block"><code>{
+            <!-- A -->
+            <div class="substage">
+              <div class="substage-tag">A</div>
+              <div class="substage-body">
+                <h4>Input assets &amp; criteria</h4>
+                <p>The user supplies the asset set and a natural-language criterion.</p>
+                <pre class="code-block"><code>criterion: "Arrange three personal desks and storages."
+assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></pre>
+              </div>
+            </div>
+
+            <!-- B -->
+            <div class="substage">
+              <div class="substage-tag">B</div>
+              <div class="substage-body">
+                <h4>Data preprocessing</h4>
+                <p>Each Objaverse asset is processed through the Blender API to produce structured metadata and multi-view renderings.</p>
+                <div class="pipeline-pills">
+                  <span class="pipe-pill"><i class="fas fa-database"></i> Objaverse</span>
+                  <span class="pipe-pill"><i class="fas fa-cube"></i> Blender API</span>
+                  <span class="pipe-pill"><i class="fas fa-tags"></i> Meta data</span>
+                  <span class="pipe-pill"><i class="fas fa-images"></i> Multi-view image</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- C -->
+            <div class="substage">
+              <div class="substage-tag">C</div>
+              <div class="substage-body">
+                <h4>Functional Description <span class="model-pill">VLM</span></h4>
+                <p>The VLM returns which faces must stay clear, which parts move, and how the part is meant to be used.</p>
+                <pre class="code-block"><code>{
   "category": "drawer",
   "description": "Rectangular drawer with a flat top.",
   "size_m": { "w": 1.0, "d": 0.4, "h": 0.9 },
@@ -259,116 +293,120 @@
   "movable_parts": "Front panel slides horizontally on rails.",
   "clearance_rule": "Keep front face clear for side-to-side access."
 }</code></pre>
+              </div>
+            </div>
 
-              <p style="margin-top:1.5rem;"><strong>Top-5 affordances</strong> &mdash; swipe through the action library:</p>
-              <div class="library-carousel-wrapper">
-                <button class="carousel-btn prev-btn" id="library-prev" aria-label="Previous">
-                  <i class="fas fa-chevron-left"></i>
-                </button>
-                <div class="action-library-container">
-                  <div class="action-library" id="action-library-scroll">
-                    <div class="library-family">
-                      <h5><i class="fas fa-door-open" style="color:#0070C0;"></i> open</h5>
-                      <span class="action-tag">drawer</span>
-                      <span class="action-tag">door</span>
-                      <span class="action-tag">cabinet</span>
-                      <span class="action-tag">lid</span>
-                    </div>
-                    <div class="library-family">
-                      <h5><i class="fas fa-hand-pointer" style="color:#78206E;"></i> push</h5>
-                      <span class="action-tag">button</span>
-                      <span class="action-tag">chair</span>
-                      <span class="action-tag">box</span>
-                    </div>
-                    <div class="library-family">
-                      <h5><i class="fas fa-hand-rock" style="color:#3B7D23;"></i> pull</h5>
-                      <span class="action-tag">drawer</span>
-                      <span class="action-tag">cord</span>
-                      <span class="action-tag">handle</span>
-                    </div>
-                    <div class="library-family">
-                      <h5><i class="fas fa-hand-paper" style="color:#d97706;"></i> touch</h5>
-                      <span class="action-tag">screen</span>
-                      <span class="action-tag">panel</span>
-                      <span class="action-tag">surface</span>
-                    </div>
-                    <div class="library-family">
-                      <h5><i class="fas fa-times-circle" style="color:#7c3aed;"></i> close</h5>
-                      <span class="action-tag">drawer</span>
-                      <span class="action-tag">door</span>
-                      <span class="action-tag">lid</span>
-                      <span class="action-tag">cabinet</span>
+            <!-- D -->
+            <div class="substage">
+              <div class="substage-tag">D</div>
+              <div class="substage-body">
+                <h4>Human&ndash;Object Interaction Pattern <span class="model-pill">VLM</span></h4>
+                <p>The VLM names the <em>top-five actions</em> each asset affords. Swipe to browse.</p>
+
+                <div class="library-carousel-wrapper">
+                  <button class="carousel-btn prev-btn" id="library-prev" aria-label="Previous">
+                    <i class="fas fa-chevron-left"></i>
+                  </button>
+                  <div class="action-library-container">
+                    <div class="action-library" id="action-library-scroll">
+                      <div class="library-family">
+                        <h5><i class="fas fa-door-open" style="color:#0070C0;"></i> open</h5>
+                        <span class="action-tag">drawer</span><span class="action-tag">door</span>
+                        <span class="action-tag">cabinet</span><span class="action-tag">lid</span>
+                      </div>
+                      <div class="library-family">
+                        <h5><i class="fas fa-hand-pointer" style="color:#78206E;"></i> push</h5>
+                        <span class="action-tag">button</span><span class="action-tag">chair</span>
+                        <span class="action-tag">box</span>
+                      </div>
+                      <div class="library-family">
+                        <h5><i class="fas fa-hand-rock" style="color:#3B7D23;"></i> pull</h5>
+                        <span class="action-tag">drawer</span><span class="action-tag">cord</span>
+                        <span class="action-tag">handle</span>
+                      </div>
+                      <div class="library-family">
+                        <h5><i class="fas fa-hand-paper" style="color:#d97706;"></i> touch</h5>
+                        <span class="action-tag">screen</span><span class="action-tag">panel</span>
+                        <span class="action-tag">surface</span>
+                      </div>
+                      <div class="library-family">
+                        <h5><i class="fas fa-times-circle" style="color:#7c3aed;"></i> close</h5>
+                        <span class="action-tag">drawer</span><span class="action-tag">door</span>
+                        <span class="action-tag">lid</span><span class="action-tag">cabinet</span>
+                      </div>
                     </div>
                   </div>
+                  <button class="carousel-btn next-btn" id="library-next" aria-label="Next">
+                    <i class="fas fa-chevron-right"></i>
+                  </button>
                 </div>
-                <button class="carousel-btn next-btn" id="library-next" aria-label="Next">
-                  <i class="fas fa-chevron-right"></i>
-                </button>
+              </div>
+            </div>
+
+            <!-- E -->
+            <div class="substage">
+              <div class="substage-tag">E</div>
+              <div class="substage-body">
+                <h4>Semantic Grouping <span class="model-pill model-pill-llm">LLM</span></h4>
+                <p>An LLM clusters assets into functional groups and emits explicit
+                <em>inter-group</em> and <em>intra-group</em> spatial relations.</p>
+
+                <div class="plan-sequence">
+                  <div class="plan-step">
+                    <span class="plan-step-num">G1</span>
+                    <span class="plan-step-action">individual_work_area</span>
+                    <span class="plan-step-object">desk</span>
+                    <span class="plan-step-object">chair</span>
+                    <span class="plan-step-object">monitor</span>
+                  </div>
+                  <div class="plan-step">
+                    <span class="plan-step-num">G2</span>
+                    <span class="plan-step-action">storage_area</span>
+                    <span class="plan-step-object">drawer</span>
+                    <span class="plan-step-object">cabinet</span>
+                  </div>
+                  <div class="plan-step">
+                    <span class="plan-step-num">R1</span>
+                    <span class="plan-step-action">intra_group</span>
+                    <span class="plan-step-object">chair faces desk</span>
+                  </div>
+                  <div class="plan-step">
+                    <span class="plan-step-num">R2</span>
+                    <span class="plan-step-action">intra_group</span>
+                    <span class="plan-step-object">desk against wall</span>
+                  </div>
+                  <div class="plan-step">
+                    <span class="plan-step-num">R3</span>
+                    <span class="plan-step-action">inter_group</span>
+                    <span class="plan-step-object">drawer reachable from chair</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
-          <!-- Stage 2 -->
+          <!-- Phase II -->
           <div class="stage-content" id="stage-2">
             <div class="stage-header">
-              <h3><i class="fas fa-object-group" style="color:#78206E;"></i> Semantic Grouping</h3>
-              <p>An LLM clusters assets into functional groups and emits explicit intra- and inter-group spatial relations.</p>
+              <h3>Phase&nbsp;II &middot; Constraint-based Layout Generation</h3>
+              <p>Two stages (F&ndash;G) that compile the behavior tags + anthropometry into a solvable program and produce the final scene.</p>
             </div>
 
-            <div class="plan-sequence">
-              <div class="plan-step">
-                <span class="plan-step-num">G1</span>
-                <span class="plan-step-action">individual_work_area</span>
-                <span class="plan-step-object">desk</span>
-                <span class="plan-step-object">chair</span>
-                <span class="plan-step-object">monitor</span>
-              </div>
-              <div class="plan-step">
-                <span class="plan-step-num">G2</span>
-                <span class="plan-step-action">storage_area</span>
-                <span class="plan-step-object">drawer</span>
-                <span class="plan-step-object">cabinet</span>
-              </div>
-              <div class="plan-step">
-                <span class="plan-step-num">R1</span>
-                <span class="plan-step-action">intra_group</span>
-                <span class="plan-step-object">chair faces desk</span>
-              </div>
-              <div class="plan-step">
-                <span class="plan-step-num">R2</span>
-                <span class="plan-step-action">intra_group</span>
-                <span class="plan-step-object">desk against wall</span>
-              </div>
-              <div class="plan-step">
-                <span class="plan-step-num">R3</span>
-                <span class="plan-step-action">inter_group</span>
-                <span class="plan-step-object">drawer reachable from chair</span>
-              </div>
-            </div>
+            <!-- F -->
+            <div class="substage">
+              <div class="substage-tag">F</div>
+              <div class="substage-body">
+                <h4>Anthropometric-based Constraint <span class="model-pill model-pill-llm">LLM</span></h4>
+                <p>The LLM emits <em>position</em>, <em>orientation</em> and <em>height</em> constraints. Each term is parameterized by user body measurements captured from an A-pose.</p>
 
-            <p class="step-lead" style="margin-top:1.25rem;">
-              <em>Rationale.</em> G1 is the user's primary work zone; G2 is reachable storage.
-              The intra-group relations keep ergonomics tight; the inter-group relation keeps
-              the workflow short.
-            </p>
-          </div>
+                <div class="pipeline-pills">
+                  <span class="pipe-pill"><span class="mono">H3</span> arm reach</span>
+                  <span class="pipe-pill"><span class="mono">H4</span> shoulder width</span>
+                  <span class="pipe-pill"><span class="mono">H6</span> hand depth</span>
+                  <span class="pipe-pill"><span class="mono">V1</span> sitting / standing height</span>
+                </div>
 
-          <!-- Stage 3 -->
-          <div class="stage-content" id="stage-3">
-            <div class="stage-header">
-              <h3><i class="fas fa-ruler-combined" style="color:#3B7D23;"></i> Anthropometric Constraint Compilation</h3>
-              <p>Every distance, orientation and clearance term is parameterized by the user's body measurements, then passed to a Blender constraint solver.</p>
-            </div>
-
-            <p><strong>Body parameters (from A-pose capture):</strong></p>
-            <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin:0.5rem 0 1rem 0;">
-              <span class="action-tag"><span class="mono">H3</span>&nbsp; arm reach</span>
-              <span class="action-tag"><span class="mono">H4</span>&nbsp; shoulder width</span>
-              <span class="action-tag"><span class="mono">H6</span>&nbsp; hand depth</span>
-              <span class="action-tag"><span class="mono">V1</span>&nbsp; sitting / standing height</span>
-            </div>
-
-            <pre class="code-block"><code>solver = ConstraintSolver()
+                <pre class="code-block"><code>solver = ConstraintSolver()
 width_d  = desk.width * 2                 # Desk + Desk
 depth_d  = desk.depth + chair.depth       # Desk + Chair
 
@@ -388,22 +426,25 @@ for i in range(N):
     # Drawer at arm-reach H3 from chair
     solver.distance_constraint(drawers[i], chairs[i],
         max = H3 - Tolerance)</code></pre>
-          </div>
-
-          <!-- Stage 4 -->
-          <div class="stage-content" id="stage-4">
-            <div class="stage-header">
-              <h3><i class="fas fa-cogs" style="color:#595959;"></i> Sequential Group Optimization</h3>
-              <p>Groups are solved one after another so later groups inherit the geometry of earlier ones, producing a Behavior-Aware Anthropometric Scene tailored to the participant's body.</p>
+              </div>
             </div>
 
-            <img src="./static/images/Figure02.png" alt="Full A-G framework pipeline"
-                 style="width:100%; border-radius:10px; border:1px solid #e2e8f0; margin-top:0.5rem;">
-            <p class="step-lead" style="margin-top:1rem;">
-              The pipeline factors generation into a <em>Semantic &amp; Behavioral Representation</em>
-              built by the VLM/LLM (stages A&ndash;E) and a <em>Constraint-based Layout Generation</em>
-              stage (F&ndash;G) that compiles and solves the anthropometric program.
-            </p>
+            <!-- G -->
+            <div class="substage">
+              <div class="substage-tag">G</div>
+              <div class="substage-body">
+                <h4>Sequential Group Optimization <span class="model-pill">VLM</span></h4>
+                <p>Groups are solved one after another so later groups inherit the geometry of earlier ones. The solver runs in Blender and outputs a <em>Behavior-Aware Anthropometric Scene</em> tailored to the participant.</p>
+
+                <div class="pipeline-pills">
+                  <span class="pipe-pill"><i class="fas fa-layer-group"></i> Group 1 solved</span>
+                  <span class="pipe-pill"><i class="fas fa-arrow-right"></i></span>
+                  <span class="pipe-pill"><i class="fas fa-layer-group"></i> Group 2 solved</span>
+                  <span class="pipe-pill"><i class="fas fa-arrow-right"></i></span>
+                  <span class="pipe-pill"><i class="fas fa-cube"></i> Blender scene</span>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
