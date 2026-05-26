@@ -122,19 +122,22 @@
           <h2 class="title is-3 section-title has-text-centered">Abstract</h2>
           <div class="content has-text-justified">
             <p>
-              Well-designed indoor scenes should prioritize <em>how people can act</em> within a space
-              rather than merely <em>what objects to place</em>. However, existing 3D scene generation
-              methods emphasize visual and semantic plausibility, while insufficiently addressing whether
-              people can comfortably walk, sit, or manipulate objects.
+              Well-designed indoor scenes should prioritize how people can act within a space rather than
+              merely what objects to place. However, existing 3D scene generation methods emphasize visual
+              and semantic plausibility, while insufficiently addressing whether people can comfortably
+              walk, sit, or manipulate objects. To bridge this gap, we present a
+              <strong>Behavior-Aware Anthropometric Scene Generation</strong> framework. Our approach
+              leverages vision&ndash;language models (VLMs) to analyze object&ndash;behavior relationships,
+              translating spatial requirements into parametric layout constraints adapted to user-specific
+              anthropometric data.
             </p>
             <p>
-              We present a <strong>Behavior-Aware Anthropometric Scene Generation</strong> framework that
-              leverages vision&ndash;language models to analyze object&ndash;behavior relationships and
-              translates spatial requirements into parametric layout constraints adapted to user-specific
-              anthropometric data. Through individual and group user studies with motion-captured
-              trajectories, we show that layouts generated with our framework yield shorter task-completion
-              times, fewer detours, cleaner action sequences, and a substantially larger usable
-              manipulation volume than path-only and baseline layouts.
+              We conducted comparative studies with state-of-the-art models using geometric metrics and a
+              user perception study (<em>N</em>=16). We further conducted in-depth human-scale studies
+              (individuals, <em>N</em>=20; groups, <em>N</em>=18). The results showed improvements in task
+              completion time, trajectory efficiency, and human&ndash;object manipulation space. This study
+              contributes a framework that bridges VLM-based interaction reasoning with anthropometric
+              constraints, validated through both technical metrics and real-scale human usability studies.
             </p>
           </div>
         </div>
@@ -166,9 +169,10 @@
           <div class="overview-card-icon"><i class="fas fa-ruler-combined"></i></div>
           <h3>Anthropometric Parameterization</h3>
           <p>
-            Every spatial constraint scales with the user's body &mdash; shoulder width
-            <span class="mono">H4</span>, arm reach <span class="mono">H3</span>, sitting
-            height <span class="mono">V1</span>. The same scene is re-solved per individual.
+            Every spatial constraint scales with the user's body &mdash; vertical height
+            <span class="mono">V1</span>, horizontal reach <span class="mono">H3</span>,
+            <span class="mono">H4</span>, drawing on 5th&ndash;95th-percentile anthropometric
+            ranges rather than a single average individual.
           </p>
         </div>
 
@@ -255,13 +259,21 @@ assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></
             <div class="substage">
               <div class="substage-tag">B</div>
               <div class="substage-body">
-                <h4>Data preprocessing</h4>
-                <p>Each Objaverse asset is processed through the Blender API to produce structured metadata and multi-view renderings.</p>
+                <h4>Data Preprocessing</h4>
+                <p>
+                  Assets are retrieved from <strong>Objaverse</strong> using
+                  <strong>OpenShape</strong>, then processed through a scripted
+                  <strong>Blender</strong> pipeline that extracts a 3D bounding box and category /
+                  width / depth / height metadata, and renders each object from four orthogonal
+                  viewpoints (0&deg;, 90&deg;, 180&deg;, 270&deg;).
+                  Local coordinates are standardized as +X right, +Y forward, +Z upward.
+                </p>
                 <div class="pipeline-pills">
                   <span class="pipe-pill"><i class="fas fa-database"></i> Objaverse</span>
-                  <span class="pipe-pill"><i class="fas fa-cube"></i> Blender API</span>
-                  <span class="pipe-pill"><i class="fas fa-tags"></i> Meta data</span>
-                  <span class="pipe-pill"><i class="fas fa-images"></i> Multi-view image</span>
+                  <span class="pipe-pill"><i class="fas fa-search"></i> OpenShape</span>
+                  <span class="pipe-pill"><i class="fas fa-cube"></i> Blender</span>
+                  <span class="pipe-pill"><i class="fas fa-tags"></i> Metadata</span>
+                  <span class="pipe-pill"><i class="fas fa-images"></i> Multi-view (4&times;)</span>
                 </div>
               </div>
             </div>
@@ -270,16 +282,27 @@ assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></
             <div class="substage">
               <div class="substage-tag">C</div>
               <div class="substage-body">
-                <h4>Functional Description <span class="model-pill">VLM</span></h4>
-                <p>The VLM returns which faces must stay clear, which parts move, and how the part is meant to be used.</p>
+                <h4>Functional Description <span class="model-pill">VLM&nbsp;&middot;&nbsp;GPT-4o</span></h4>
+                <p>
+                  The VLM takes the multi-view images + metadata and produces a structured JSON
+                  capturing qualitative information about <em>movable parts and usage requirements</em>
+                  &mdash; e.g., movement axes, articulation points, and kinematic constraints that
+                  are not evident in static category labels.
+                </p>
+                <p class="caption">Illustrative output (fields per Figure&nbsp;3):</p>
                 <pre class="code-block"><code>{
-  "category": "drawer",
-  "description": "Rectangular drawer with a flat top.",
-  "size_m": { "w": 1.0, "d": 0.4, "h": 0.9 },
-  "on_floor": true, "on_wall": false, "on_ceiling": false,
-  "movable_parts": "Front panel slides horizontally on rails.",
-  "clearance_rule": "Keep front face clear for side-to-side access."
-}</code></pre>
+  "category":   "drawer",
+  "description":"Rectangular drawer with a flat top.",
+  "width / depth / height (m)": [1.0, 0.4, 0.9],
+  "onCeiling":  false,
+  "onWall":     false,
+  "onFloor":    true,
+  "front view": 0
+}
+// + free-form note, e.g.:
+// "A front panel door slides horizontally along the X axis
+//  across the upper compartment.
+//  Keep the front face clear for side-to-side access."</code></pre>
               </div>
             </div>
 
@@ -287,8 +310,13 @@ assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></
             <div class="substage">
               <div class="substage-tag">D</div>
               <div class="substage-body">
-                <h4>Human&ndash;Object Interaction Pattern <span class="model-pill">VLM</span></h4>
-                <p>The VLM names the <em>top-five actions</em> each asset affords. Swipe to browse.</p>
+                <h4>Human&ndash;Object Interaction Pattern <span class="model-pill">VLM&nbsp;&middot;&nbsp;GPT-4o</span></h4>
+                <p>
+                  The VLM identifies the <em>top five human actions</em> a user is likely to perform
+                  with the asset, drawn from a library of atomic visual actions (e.g.,
+                  <em>sit, open, pull</em>). For the example drawer in Figure&nbsp;3, the inferred
+                  actions are:
+                </p>
 
                 <div class="library-carousel-wrapper">
                   <button class="carousel-btn prev-btn" id="library-prev" aria-label="Previous">
@@ -298,28 +326,23 @@ assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></
                     <div class="action-library" id="action-library-scroll">
                       <div class="library-family">
                         <h5><i class="fas fa-door-open" style="color:#0070C0;"></i> open</h5>
-                        <span class="action-tag">drawer</span><span class="action-tag">door</span>
-                        <span class="action-tag">cabinet</span><span class="action-tag">lid</span>
+                        <p class="library-note">e.g., a door</p>
                       </div>
                       <div class="library-family">
                         <h5><i class="fas fa-hand-pointer" style="color:#78206E;"></i> push</h5>
-                        <span class="action-tag">button</span><span class="action-tag">chair</span>
-                        <span class="action-tag">box</span>
+                        <p class="library-note">an object</p>
                       </div>
                       <div class="library-family">
                         <h5><i class="fas fa-hand-rock" style="color:#3B7D23;"></i> pull</h5>
-                        <span class="action-tag">drawer</span><span class="action-tag">cord</span>
-                        <span class="action-tag">handle</span>
+                        <p class="library-note">an object</p>
                       </div>
                       <div class="library-family">
                         <h5><i class="fas fa-hand-paper" style="color:#d97706;"></i> touch</h5>
-                        <span class="action-tag">screen</span><span class="action-tag">panel</span>
-                        <span class="action-tag">surface</span>
+                        <p class="library-note">an object</p>
                       </div>
                       <div class="library-family">
                         <h5><i class="fas fa-times-circle" style="color:#7c3aed;"></i> close</h5>
-                        <span class="action-tag">drawer</span><span class="action-tag">door</span>
-                        <span class="action-tag">lid</span><span class="action-tag">cabinet</span>
+                        <p class="library-note">e.g., a door, a box</p>
                       </div>
                     </div>
                   </div>
@@ -327,6 +350,10 @@ assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></
                     <i class="fas fa-chevron-right"></i>
                   </button>
                 </div>
+                <p class="caption" style="margin-top:0.5rem;">
+                  The set of five differs per object &mdash; the carousel shows the drawer example
+                  from Figure&nbsp;3.
+                </p>
               </div>
             </div>
 
@@ -335,39 +362,30 @@ assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></
               <div class="substage-tag">E</div>
               <div class="substage-body">
                 <h4>Semantic Grouping <span class="model-pill model-pill-llm">LLM</span></h4>
-                <p>An LLM clusters assets into functional groups and emits explicit
-                <em>inter-group</em> and <em>intra-group</em> spatial relations.</p>
-
-                <div class="plan-sequence">
-                  <div class="plan-step">
-                    <span class="plan-step-num">G1</span>
-                    <span class="plan-step-action">individual_work_area</span>
-                    <span class="plan-step-object">desk</span>
-                    <span class="plan-step-object">chair</span>
-                    <span class="plan-step-object">monitor</span>
-                  </div>
-                  <div class="plan-step">
-                    <span class="plan-step-num">G2</span>
-                    <span class="plan-step-action">storage_area</span>
-                    <span class="plan-step-object">drawer</span>
-                    <span class="plan-step-object">cabinet</span>
-                  </div>
-                  <div class="plan-step">
-                    <span class="plan-step-num">R1</span>
-                    <span class="plan-step-action">intra_group</span>
-                    <span class="plan-step-object">chair faces desk</span>
-                  </div>
-                  <div class="plan-step">
-                    <span class="plan-step-num">R2</span>
-                    <span class="plan-step-action">intra_group</span>
-                    <span class="plan-step-object">desk against wall</span>
-                  </div>
-                  <div class="plan-step">
-                    <span class="plan-step-num">R3</span>
-                    <span class="plan-step-action">inter_group</span>
-                    <span class="plan-step-object">drawer reachable from chair</span>
-                  </div>
+                <p>
+                  Objects are organized into <em>functional groups</em> reflecting how humans interact
+                  with them &mdash; e.g., <em>chairs around a desk forming a workspace</em>, or
+                  <em>sofas arranged around a coffee table creating a lounge area</em>.
+                </p>
+                <p>
+                  The LLM then emits two relation types:
+                </p>
+                <ul>
+                  <li><strong>Intra-group spatial relations</strong> &mdash; internal arrangement within a functional unit.</li>
+                  <li><strong>Inter-group spatial relations</strong> &mdash; connectivity between distinct groups.</li>
+                </ul>
+                <p>
+                  Atomic actions from Stage&nbsp;D are <em>reinterpreted in group context</em>: an
+                  atomic <em>open</em> or <em>pull (an object)</em> becomes the higher-level relation
+                  <em>organize</em> when understood within a multi-cabinet storage group. Each group
+                  also receives a behavioral priority (e.g., scene-defining elements like beds or
+                  desks are placed first) that is used to reduce optimization complexity in Stage&nbsp;G.
+                </p>
+                <div class="pipeline-pills">
+                  <span class="pipe-pill"><i class="fas fa-users"></i> Group: Individual work area</span>
+                  <span class="pipe-pill"><i class="fas fa-archive"></i> Group: Storage area</span>
                 </div>
+                <p class="caption">Group names follow Figure&nbsp;4E.</p>
               </div>
             </div>
           </div>
@@ -383,36 +401,43 @@ assets:    { desk &times;3, chair &times;3, drawer &times;3, &hellip; }</code></
             <div class="substage">
               <div class="substage-tag">F</div>
               <div class="substage-body">
-                <h4>Anthropometric-based Constraint <span class="model-pill model-pill-llm">LLM</span></h4>
-                <p>The LLM emits <em>position</em>, <em>orientation</em> and <em>height</em> constraints. Each term is parameterized by user body measurements captured from an A-pose.</p>
+                <h4>Anthropometric-based Constraint Inference <span class="model-pill model-pill-llm">LLM</span></h4>
+                <p>
+                  Each natural-language relation (e.g., <em>Office Chair facing Desk</em> for
+                  intra-group, <em>Double Chest maintains adequate distance from Desk</em> for
+                  inter-group) is parsed and assigned to one of three constraint types &mdash;
+                  <strong>positional</strong>, <strong>orientational</strong>, or
+                  <strong>height-based</strong> (Table&nbsp;1 in the paper).
+                </p>
+                <p>
+                  Distance constraints are expressed as a center-to-center range
+                  <span class="mono">[d_min, d_max]</span> with <em>d_accessibility</em> = minimum
+                  reach distance and <em>d_clearance</em> = space needed for operational movement
+                  (e.g., pulling a chair). The tolerance buffer <span class="mono">&tau;</span>
+                  is inferred by the VLM from object function and interaction context.
+                </p>
 
-                <div class="pipeline-pills">
-                  <span class="pipe-pill"><span class="mono">H3</span> arm reach</span>
-                  <span class="pipe-pill"><span class="mono">H4</span> shoulder width</span>
-                  <span class="pipe-pill"><span class="mono">H6</span> hand depth</span>
-                  <span class="pipe-pill"><span class="mono">V1</span> sitting / standing height</span>
-                </div>
+                <p><strong>Constraint taxonomy (ours vs. LayoutVLM&nbsp;[35]):</strong></p>
+                <table class="taxonomy">
+                  <thead>
+                    <tr><th>Type</th><th>Name</th><th>Anthropometric rationale</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Position</td><td><span class="mono">L_distance(p<sub>i</sub>, p<sub>j</sub>, d_min, d_max)</span></td><td>Bounds inferred from reach &amp; clearance.</td></tr>
+                    <tr><td>Position</td><td><span class="mono">L_against_wall(p<sub>i</sub>, w<sub>j</sub>, b<sub>i</sub>)</span></td><td>Accessibility for nearby interactions.</td></tr>
+                    <tr><td>Orientation</td><td><span class="mono">L_align_with(p<sub>i</sub>, p<sub>j</sub>, &Theta;)</span></td><td>Task-oriented alignment.</td></tr>
+                    <tr><td>Orientation</td><td><span class="mono">L_point_towards(p<sub>i</sub>, p<sub>j</sub>, &Theta;)</span></td><td>Preferred viewing / interaction direction.</td></tr>
+                    <tr><td>Height</td><td><span class="mono">L_on_top_of(p<sub>i</sub>, p<sub>j</sub>, h)</span></td><td>Vertical stacking with sufficient interaction area.</td></tr>
+                  </tbody>
+                </table>
 
-                <pre class="code-block"><code>solver = ConstraintSolver()
-width_d  = desk.width * 2                 # Desk + Desk
-depth_d  = desk.depth + chair.depth       # Desk + Chair
-
-for i in range(N):
-    # Orientation &mdash; against wall, for space efficiency
-    solver.against_wall(desks[i], walls[0])
-
-    # Position &mdash; min/max spacing scaled by accessibility gap
-    if i &lt; N - 1:
-        solver.distance_constraint(desks[i], desks[i+1],
-            min = 0.1 + (width_d / 2),
-            max = 0.3 + (width_d / 2) + Tolerance)
-
-    # Chair must face the desk
-    solver.point_towards(chairs[i], desks[i])
-
-    # Drawer at arm-reach H3 from chair
-    solver.distance_constraint(drawers[i], chairs[i],
-        max = H3 - Tolerance)</code></pre>
+                <p>
+                  Anthropometric parameters are drawn from <em>Human Dimension and Interior Space</em>&nbsp;[28]
+                  using <strong>5th&ndash;95th percentile ranges</strong> for forward reach, lateral
+                  reach, body breadth, and body depth &mdash; not from a single average individual.
+                  Examples shown in Figure&nbsp;9: <span class="mono">V1</span> (vertical height),
+                  <span class="mono">H3</span>, <span class="mono">H4</span> (horizontal reach).
+                </p>
               </div>
             </div>
 
@@ -420,16 +445,26 @@ for i in range(N):
             <div class="substage">
               <div class="substage-tag">G</div>
               <div class="substage-body">
-                <h4>Sequential Group Optimization <span class="model-pill">VLM</span></h4>
-                <p>Groups are solved one after another so later groups inherit the geometry of earlier ones. The solver runs in Blender and outputs a <em>Behavior-Aware Anthropometric Scene</em> tailored to the participant.</p>
-
-                <div class="pipeline-pills">
-                  <span class="pipe-pill"><i class="fas fa-layer-group"></i> Group 1 solved</span>
-                  <span class="pipe-pill"><i class="fas fa-arrow-right"></i></span>
-                  <span class="pipe-pill"><i class="fas fa-layer-group"></i> Group 2 solved</span>
-                  <span class="pipe-pill"><i class="fas fa-arrow-right"></i></span>
-                  <span class="pipe-pill"><i class="fas fa-cube"></i> Blender scene</span>
-                </div>
+                <h4>VLM-based Sequential Group Optimization <span class="model-pill">VLM</span></h4>
+                <p>
+                  Each constraint is converted into a differentiable penalty (distance constraints
+                  penalize deviation from <span class="mono">[d_min, d_max]</span>; orientation
+                  constraints penalize deviation from the inferred alignment angles). The objective
+                  <span class="mono">L = &sum;<sub>i</sub> w<sub>i</sub> &middot; violation<sub>i</sub>(&theta;)</span>
+                  is minimized for <strong>400 gradient-based iterations</strong>, with
+                  <em>adaptive weighting</em> that prioritizes collision avoidance when bounding-box
+                  overlap exceeds 50&percnt;.
+                </p>
+                <p>
+                  Optimization proceeds <em>sequentially by group</em>: intra-group violations are
+                  minimized first, then inter-group constraints anchor each new group to the previously
+                  placed ones. The final layout is rendered in <strong>Blender</strong> as a
+                  <em>Behavior-Aware Anthropometric Scene</em>.
+                </p>
+                <p class="caption">
+                  The optimization structure follows LayoutVLM&nbsp;[35]; the contribution lies in the
+                  behaviorally and anthropometrically grounded constraints fed into it.
+                </p>
               </div>
             </div>
           </div>
@@ -448,8 +483,8 @@ for i in range(N):
         <p>
           A per-action <strong>3D bounding volume</strong> sized by the user's anthropometry that
           must stay collision-free for the action to be physically achievable. Reserving this
-          <em>volume</em> &mdash; not just a 2D walkable <em>path</em> &mdash; is what separates
-          <strong>Human-Operational</strong> layouts from prior <strong>Path-Only</strong> approaches.
+          <em>volume</em> &mdash; not just a navigable 2D <em>passage</em> &mdash; is what separates
+          <strong>Human-Operational</strong> layouts from <strong>Passage-Only</strong> approaches.
         </p>
       </div>
       <div class="content has-text-centered">
@@ -463,21 +498,22 @@ for i in range(N):
     <div class="container is-max-desktop">
       <h2 class="title is-3 section-title">Experiments</h2>
       <p class="section-lead">
-        We compare three layout conditions across two scene categories (Office, Lounge) under
-        both individual (60&nbsp;min) and group (120&nbsp;min) tasks in an 8-camera motion-capture room.
+        We compare three layout conditions across <em>Office</em> and <em>Lounge</em> scenes under
+        both individual (<em>N</em>=20) and group (<em>N</em>=18) sessions, plus a perception study
+        (<em>N</em>=16).
       </p>
 
       <div class="condition-row">
         <span class="cond cond-baseline">Baseline</span>
-        <span class="cond-desc">Existing scene-generation method &mdash; no behavior reasoning.</span>
+        <span class="cond-desc"><strong>LayoutVLM&nbsp;[35]</strong> &mdash; a state-of-the-art LLM-based layout method that frames scene synthesis as differentiable constraint optimization, without anthropometric grounding.</span>
       </div>
       <div class="condition-row">
-        <span class="cond cond-po">PO &middot; Path-Only</span>
-        <span class="cond-desc">Reserves a navigable path between objects.</span>
+        <span class="cond cond-po">PO &middot; Passage-Only</span>
+        <span class="cond-desc">Reserves a navigable passage between objects, but ignores the volume needed for manipulation actions.</span>
       </div>
       <div class="condition-row">
         <span class="cond cond-ho">HO &middot; Human-Operational (Ours)</span>
-        <span class="cond-desc">Reserves the full anthropometric manipulation volume for every action.</span>
+        <span class="cond-desc">Guarantees sufficient human-operational space based on movement-related anthropometric envelopes.</span>
       </div>
     </div>
   </section>

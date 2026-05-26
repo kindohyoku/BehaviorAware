@@ -636,6 +636,60 @@ body {
 
 .pipe-pill i { color: var(--accent); font-size: 0.8rem; }
 
+/* ===== Captions & small notes inside method substages ===== */
+.caption {
+  font-size: 0.82rem;
+  color: var(--text-soft);
+  font-style: italic;
+  margin: 0.5rem 0 0 0;
+}
+
+.library-note {
+  font-family: 'Google Sans', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  margin: 0.25rem 0 0 0;
+}
+
+/* ===== Constraint taxonomy table ===== */
+.taxonomy {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin: 0.5rem 0 0.75rem 0;
+}
+
+.taxonomy thead th {
+  text-align: left;
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--accent-bg);
+  padding: 0.5rem 0.7rem;
+  border-bottom: 2px solid rgba(31, 58, 138, 0.2);
+}
+
+.taxonomy tbody td {
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.taxonomy tbody tr:last-child td { border-bottom: 0; }
+
+.taxonomy tbody td:first-child {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.taxonomy .mono {
+  font-size: 0.78rem;
+  background: transparent;
+  padding: 0;
+}
+
 /* ===== Responsive ===== */
 @media screen and (max-width: 900px) {
   .overview-grid { grid-template-columns: 1fr; }
